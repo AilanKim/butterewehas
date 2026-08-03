@@ -1,0 +1,178 @@
+import tkinter as tk  # [내장 모듈] 파이썬 기본 내장 GUI 라이브러리
+import sys  # [내장 모듈] 파이썬 프로세스 제어 모듈
+from quiz import quiz
+
+# 1. Tkinter 기본 창 생성 (초기화)
+# tk.Tk()는 화면에 띄울 메인 창(Window) 객체를 만듭니다.
+root = tk.Tk()
+root.title("대사, 제목을 맞춰보세요.") #게임제목
+root.geometry("700x600") #사이즈 설정하는 것으로 수정 금지
+
+# * --------------------------------------------------
+
+# 2. 함수 기본 틀
+def say_hello():
+    print("안녕하세요! 좋은 하루 되세요💜💜")
+
+game = {
+    "name" : "맞추기게임",
+    "점수" : 0,
+    "greeting" : say_hello, # 기존 함수를 키의 값으로 지정
+}
+# [객체/딕셔너리 안에 함수 넣기]
+# 키(Key)의 값(Value)으로 함수 자체를 넣어서 관리할 수 있습니다.
+
+# * ---------------------------------------------------
+
+#버튼생성
+hi = tk.Label(root, text="안녕하세요.\n 방문해 주셔서 감사합니다.🙇🏻‍♀️🙇🏻‍♀️", font=("맑은 고딕", 12))
+hi.pack(pady=20)
+
+# * --------------------------------------------
+
+#설명
+explain = tk.Label(root, text="아래에 랜덤으로 문제가 나옵니다.\n"
+                "글을 읽고 그에 맞는 대사나 제목을 밑에 입력창에 쓰시면 됩니다. 화이팅!!🔥🔥\n"
+                "점수 계산은 정답은 +10, 땡 -10, 힌트보기 -5 차감 됩니다."
+                ,font=("맑은 고딕", 12))
+explain.pack(pady=10)
+
+# * --------------------------------------------
+
+#힌트 나오는 라벨을 하나 더 해주기
+hint = tk.Label(root, text="", font=("맑은 고딕", 15))
+hint.pack(pady=10) # 가운데로 오는 것
+#quiz에 맞게 Hint 단어 정확하게 써준다.
+#힌트 그냥 보게 아니고 선택적으로 보게끔.
+
+# * ---------------------------------------------
+
+current = 0 #밖으로 빼기. 함수안에 들어가는 건 아니다.
+score = 0 #점수기능 집어 넣기.
+hint_used = False #힌트 한번 누르면 까이고 그 아래는 안까이게 넣기
+
+# * ---------------------------------------------
+
+#시작하기
+start = tk.Label(root, text="도전하기", font=("맑은 고딕", 15))
+start.pack(pady=5)
+
+# * --------------------------------------------
+
+#질문
+first = tk.Label(root, text=quiz[current]["question"], font=("맑은 고딕", 15))
+first.pack(pady=10)
+
+# * --------------------------------------------
+
+#입력하기
+answer = tk.Entry(root, font=("궁서체", 20))
+answer.pack(pady=10)
+#정답 입력 함수
+
+# * --------------------------------------------
+
+#frame을 활용해서 버튼 사이의 여백들 조절하기
+button_frame = tk.Frame(root)
+button_frame.pack(pady=10) #위치, 여백 조절하는 틀을 만들어 주는 작업
+
+# * --------------------------------------------
+
+#보이는 곳에서 나오게끔 정의 하기
+result = tk.Label(root, text="", font=("맑은 고딕", 15))
+result.pack(pady=10)
+
+# * ----------------------------------------------
+
+def enter_text(event) :
+    global score
+
+    text = answer.get().strip() #입력창의 글자를 땡겨와서 검사 하는 것.
+    print(text) #답 입력 값 출력
+    print(quiz[current]["answer"]) #여기에 다음 답 넘어가는 걸 입력
+    
+    if text == quiz[current]["answer"]: #다음 답이 계속 되도록 돌리기
+        result.config(text = "⭕정답!⭕") #정답표시
+        score += 10
+        print(f"총 점수 : {score}")
+
+        root.after(2000, next_question)
+
+    else : 
+        result.config(text = "❌땡!❌")
+        score -= 10
+        print(f"총 점수 : {score}")
+
+answer.bind("<Return>", enter_text) #Enter누르면 넘어가게 하기 
+
+# * --------------------------------------------
+
+#힌트 나오는 라벨을 하나 더 해주기
+hint = tk.Label(root, text="", font=("맑은 고딕", 15))
+hint.pack(pady=2) # 가운데로 오는 것
+#quiz에 맞게 Hint 단어 정확하게 써준다.
+#힌트 그냥 보게 아니고 선택적으로 보게끔.
+#가운데로 오게하려면 left이런거 삭제.
+
+# * --------------------------------------------
+
+def hint_text() :
+    global score, hint_used
+
+    if not hint_used : #힌트 누르면 깍이게 되는 장치
+        score -= 5
+        hint_used = True
+    hint.config(text=quiz[current]["Hint"])
+    #힌트는 답을 입력 할 필요가 없으므로 그냥 보여주면 된다.
+
+hint_button = tk.Button(button_frame, text="힌트보기", font=("맑은 고딕", 15), command=hint_text)
+hint_button.pack(side="left", pady=10)
+#이 위로 힘수들을 올린다. command가 역할을 하기 위해서.
+
+# * --------------------------------------------
+
+#새 문제로 넘어가는 거 
+def next_question() :
+    print("next_question 실행") #안내
+    global current , score, hint_used #실행하는거 다 넣기
+
+    if current < len(quiz) -1 :
+        current += 1 #다음 문제로 넘어갈 수 있게 하기
+        hint_used = False #다음문제에서도 힌트 쓰면 점수 깍기.
+        print("현제 문제 번호:", current)
+        print(len(quiz))
+
+        first.config(text=quiz[current]["question"])
+        result.config(text="")#지우기
+        hint.config(text="") #여기에 힌트도 볼 수 있게 집어 넣기
+        answer.delete(0, tk.END) #입력 후 바로 다 지워지게 한다.
+        answer.focus_set() #커서 다시 입력창으로 가기
+
+    else :
+        total_score = len(quiz) * 10 #이렇게 수식해놓으면 퀴즈마다 점수가 총 자동계산.
+        print(total_score)
+        result.config(text= f"🎉게임종료!\n 최종점수 : {score}/{total_score}점")
+        #여기서 최종 점수가 50/100 이렇게 나오도록 하기. 꼭 /로 점수/최종을 하게 넣기.
+# * --------------------------------------------
+
+#이 함수를 지우면 밑에 command가 실행이 안 된다.
+def clear():
+    answer.delete(0, tk.END) # 전부다 지우는 명령어
+
+# * --------------------------------------------
+
+#모르면 넘기는 패스 버튼
+pass_button = tk.Button(button_frame, text="PASS", font = ("궁서체", 18), command=next_question)
+pass_button.pack(side="left", pady=10)
+
+# * --------------------------------------------
+
+#지워서 다음 답을 만들기  #root를 빼고 button_frame을 넣어서 위치를 조정한다.
+next = tk.Button(button_frame, text="지우기",
+                font=("맑은 고딕", 15), command=clear) #지우는거 넣기
+next.pack(side="left", pady=10)
+
+# * --------------------------------------------
+
+#GUI 이벤트 루프 실행 (창이 열린 상태를 유지하며 사용자 입력을 대기)
+root.mainloop()
