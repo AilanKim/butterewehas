@@ -1,0 +1,214 @@
+detail = ["시작", "선택", "결제"]
+test = "커피자판기"
+
+for 자판기 in detail : 
+    file_nmae = 자판기 + ".py"
+    file = open(file_nmae, "w", encoding="utf-8")
+    file.write(자판기)
+    file.close()
+
+    캔커피 = [
+    {"조지아" : 2400},
+    {"타오피" : 2200},
+    {"바리스타" : 2900},
+    {"칸타타" : 2800},
+    {"레쓰비" : 1000},
+    {"프렌치카페" : 2700},
+    {"스타벅스" : 3200},
+    {"맥스웰하우스" : 1500},
+]
+
+#종류는 총 10가지 그리고 가격 설정
+
+menu = {
+    "1. 조지아" : 2400,
+    "2. 티오피" : 2200,
+    "3. 바리스타" : 2900,
+    "4. 칸타타" : 2800,
+    "5. 레쓰비" : 1000,
+    "6. 프렌치카페" : 2700,
+    "7. 스타벅스" : 3200,
+    "8. 멕스웰하우스" : 1500,
+    "9. 일리" : 1300,
+    "10. UCC" : 2500
+}
+
+# * ----------------------------
+
+select_menu : None
+
+if menu == '1' :
+    select_menu = '1. 조지아'
+if menu == '2' :
+    select_menu = '2. 티오피'
+if menu == '3' :
+    select_menu = '3. 바리스타'
+if menu == '4' :
+    select_menu = '4. 칸타타'
+if menu == '5' :
+    select_menu = '5. 레쓰비'
+if menu == '6' :
+    select_menu = '6. 프렌치카페'
+if menu == '7' :
+    select_menu = '7. 스타벅스'
+if menu == '8' :
+    select_menu = '8. 맥스웰하우스'
+if menu == '9' :
+    select_menu = '9. 일리'
+if menu == '10' :
+    select_menu = '10. UCC'
+
+
+# * -------------------------
+
+#선택 번호에 대한 제품명 답 조건문
+
+coffee = input("제품을 선택해 주세요 :)")
+
+if coffee == '1' :
+    print(2400)
+if coffee == '2' :
+    print(2200)
+if coffee == '3' :
+    print(2900)
+if coffee == '4' :
+    print(2800)
+if coffee == '5' :
+    print(1000)
+if coffee == '6' :
+    print(2700)
+if coffee == '7' :
+    print(3200)
+if coffee == '8' :
+    print(1500)
+if coffee == '9' :
+    print(1300)
+if coffee == '10' :
+    print(2500)
+
+#이제 가격에 대한 결제를 해야 한다.
+#현금으로 했을 시 지폐를 얼마를 넣으면 안되는 그 값 설정을 함께 해야한다. 
+
+# * --------------------------
+
+def get_user_choice () :
+    return coffee
+
+
+def process_data(coffee):
+    return coffee
+
+your_choice = get_user_choice ()
+result = process_data(your_choice)
+print(result)
+
+# * --------------------------
+
+#지폐 단위로 진실 거짓 설정
+#지페 천원 이하를 눌렀을 때 그 밑이면 잔액이 부족합니다. 넣었다.
+#이걸로 현금이나 동전은 구성이 가능 할 것 같다.
+
+# * -------------------------------
+
+#100원
+
+def money():
+    
+    cash = (100)
+    print(cash)
+
+    if cash > 100 :
+        print("상품을 선택해 주세요.")
+    else :
+        print("잔액이 부족합니다.")
+
+money()
+
+# * -------------------------------
+
+#500원
+
+def money():
+    
+    cash = (500)
+    print(cash)
+
+    if cash > 500 :
+        print("상품을 선택해 주세요.")
+    else :
+        print("잔액이 부족합니다.")
+
+money()
+
+# * -------------------------------
+
+#1000원
+
+def money():
+    
+    cash = (1000)
+    print(cash)
+
+    if cash > 1000 :
+        print("상품을 선택해 주세요.")
+    else :
+        print("잔액이 부족합니다.")
+
+money()
+
+# * -------------------------------
+
+#5000원
+
+def money():
+    
+    cash = (5000)
+    print(cash)
+
+    if cash > 5000 :
+        print("상품을 선택해 주세요.")
+    else :
+        print("잔액이 부족합니다.")
+
+money()
+
+# * -------------------------------
+
+#10000원
+
+def money():
+    
+    cash = (10000)
+    print(cash)
+
+    if cash > 10000 :
+        print("상품을 선택해 주세요.")
+    else :
+        print("잔액이 부족합니다.")
+
+money()
+
+
+# * -----------------------------
+
+
+
+#선택 할 수 있게 입력
+
+choose = input("커피를 골라주세요.")
+chooseinfo = {}
+
+for i, iscoffee in enumerate(coffee_nameprice) : 
+    if choose in iscoffee['name'] :
+         chooseinfo['name'] = choose
+         chooseinfo['price'] = coffee_nameprice[i]['price']
+         print('{}를 선택하셨습니다.'. format(chooseinfo['name']))
+         print('가격은 {}원 입니다.\n'. format(chooseinfo['price']))
+         break
+
+if chooseinfo == {}:
+	print('입력한 음료는 없습니다.')
+
+# * -------------------------------------
+
+# 이 부분은 결제 부분이므로 결제로 끌어가서 해봐야 한다.
