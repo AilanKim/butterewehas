@@ -1,0 +1,80 @@
+
+#라면자판기
+#파일세분화 할 때 파일명 끝
+
+#종류 파일 분류 완료
+
+#시작
+
+from 시작 import start 
+print("시작")
+
+intro = input("라면자판기를 사용하시겠습니까?(엔터)")
+choice = input("그런다면 네/아니요로 대답해주세요.")
+
+print(intro)
+print(choice)
+
+#종류고르기
+for 브랜드 in 시작 :
+    print(브랜드)
+
+kinds = input("라면종류를 골라서 입력해주세요.(순차례로 순서를 눌러도 됩니다.)")
+print(kinds)
+
+#면고르기
+for 면고르기 in 면 : 
+    print(면고르기)
+
+noodles = input("면을 골라서 입력해주세요.(순차례로 순서를 눌러도 됩니다.)")
+print(noodles)
+
+#후레이크
+for 건더기 in 후레이크 :
+    print(건더기)
+
+dry = input("후레이크를 골라서 입력해주세요.(순차례로 순서를 눌러도 됩니다.)")
+print(dry)
+
+#스프
+for 파우더 in 스프 :
+    print(파우더)
+
+powder = input("스프를 골라서 입력해주세요.(순차례로 순서를 눌러도 됩니다.)")
+print(powder)
+
+#추가
+for 사이드 in 추가 : 
+    print(사이드)
+
+side = input("스프를 골라서 입력해주세요.(순차례로 순서를 눌러도 됩니다.)")
+print(side)
+
+#조미
+for 오일 in 조미 : 
+    print(오일)
+
+oil = input("조미 할 것을 골라서 입력해주세요.(순차례로 순서를 눌러도 됩니다.)")
+print(oil)
+
+#냄비
+for 그릇 in 냄비 :
+    print(그릇)
+
+dish = input("그릇 골라서 입력해주세요.(순차례로 순서를 눌러도 됩니다.)")
+print(dish)
+
+#물
+for 워터 in 물 :
+    print(워터)
+
+water = input("물을 골라서 입력해주세요.(순차례로 순서를 눌러도 됩니다.)")
+print(water)
+
+#조리시간
+for 타임 in 조리시간 : 
+    print(타임)
+
+time = input("조리시간을 골라서 입력해주세요.(순차례로 순서를 눌러도 됩니다.)")
+print(time)
+
