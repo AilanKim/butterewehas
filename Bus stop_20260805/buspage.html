@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚌Bus Stop 대전 버스노선</title>
+    <style>
+        /* 1. 기본 스타일 리셋 및 공통 설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0; /* 배경 회색 */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px; /* 각 화면 사이 간격 */
+            padding: 50px;
+            overflow-x: auto; /* 화면이 많아지면 가로 스크롤 */
+        }
+
+        /* 2. 아이폰 컨테이너 스타일 (iPhone 16 Pro 비율 19.5:9 적용) */
+        .app-container {
+            width: 320px; /* 고정 너비 (테스트용) */
+            height: calc(320px * (19.5 / 9)); /* 19.5:9 비율 계산 */
+            background-color: #f7fffb; /* 기본 민트색 배경 */
+            border-radius: 40px; /* 둥근 모서리 */
+            overflow: hidden; /* 내부 요소가 넘치지 않도록 */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* 부드러운 그림자 */
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* 3. 공통 UI 요소 스타일 */
+        
+        /* 'BUS' 타이틀 */
+        .app-title-container {
+            padding: 30px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .app-title {
+            font-size: 60px;
+            font-weight: 900;
+            color: #0000ff; /* 파란색 */
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            /* 이미지의 부드러운 그림자 효과 */
+            text-shadow: 2px 2px 0 rgba(0, 0, 255, 0.3);
+        }
+
+        /* 공통 버튼 스타일 (1, 3 화면) */
+        .btn-common {
+            width: 100px;
+            height: 100px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .btn-common:active {
+            transform: scale(0.95);
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .btn-common-text {
+            color: #000000;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        /* =======================================================
+        4. 화면별 스타일 구성 
+        ======================================================= */
+
+        /* ---------------- [화면 1] 홈 화면 ---------------- */
+        
+        .screen-1 .main-buttons-area {
+            flex: 1; /* 남은 공간 차지 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 초록색 상단 바 */
+        .screen-1 .top-divider-green {
+            height: 10px;
+            background-color: #a4edb9;
+        }
+
+        /* 버튼 테두리 색상 */
+        .screen-1 .btn-green { border: 5px solid #a4edb9;
+                            background-color: #a4edb9; }
+
+        .screen-1 .btn-blue { border: 5px solid #bce4fc;
+                            background-color: #bce4fc; }
+
+        .screen-1 .btn-pink { border: 5px solid #ffccca; 
+                            background-color: #ffccca;}
+
+        /* 하단 탭 바 */
+        .screen-1 .bottom-tabs-container {
+            display: flex;
+            height: 130px;
+        }
+
+        .screen-1 .tab-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 16px;
+            text-align: center;
+            padding: 10px;
+            line-height: 1.2;
+        }
+
+        .screen-1 .tab-blue { background-color: #bce4fc; }
+        .screen-1 .tab-pink { background-color: #ffccca; }
+
+        /* ---------------- [화면 2] 색상 영역 화면 ---------------- */
+        
+        /* 화면 2는 BUS 아래에 바로 색상 영역 */
+        .screen-2 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .screen-2 .color-areas-container {
+            flex: 1; /* 남은 공간 모두 차지 */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 공통 색상 영역 텍스트 */
+        .screen-2 .color-text {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 20px 30px;
+        }
+
+        /* 파란색 영역 */
+        .screen-2 .area-blue {
+            flex: 1; /* 핑크색보다 더 넓게 (약 1:1 비율) */
+            background-color: #bce4fc;
+        }
+
+        /* 핑크색 영역 */
+        .screen-2 .area-pink {
+            flex: 1;
+            background-color: #ffccca;
+        }
+
+        /* ---------------- [화면 3] 상세 화면 ---------------- */
+        
+        .screen-3 {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 초록색 상단 바 */
+        .screen-3 .top-divider-green {
+            height: 10px;
+            background-color: #a4edb9;
+        }
+
+        /* 상세 내용 영역 */
+        .screen-3 .detail-content-area {
+            flex: 1;
+            padding: 20px 30px;
+            background-color: #f7fffb; /* 기본 민트색 배경 */
+        }
+
+        /* 상세 텍스트 */
+        .screen-3 .detail-text {
+            color: #000000;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- [화면 1] iPhone 16 - 1 -->
+    <div class="app-container screen-1">
+        <!-- BUS 타이틀 -->
+        <div class="app-title-container">
+            <h1 class="app-title">🚍🚌🚏</h1>
+        </div>
+
+        <!-- 초록색 상단 바 첫번째 화면 부분 -->
+        <div class="top-divider-green"></div>
+
+        <!-- 메인 버튼 영역 (Flex center) -->
+        <div class="main-buttons-area">
+            <div class="btn-common btn-green">
+                <span class="btn-common-text">🚏<br>Add<br>Bus Stop</span>
+            </div>
+            <div class="btn-common btn-blue">
+                <span class="btn-common-text">🏠<br>Go to<br>home</span>
+            </div>
+            <div class="btn-common btn-pink">
+                <span class="btn-common-text">🏢<br>Go to<br>work</span>
+            </div>
+        </div>
+
+        <!-- 하단 탭 바 (Flex row) -->
+        <div class="bottom-tabs-container">
+            <div class="tab-item tab-blue">
+                <span class="tab-text">📍🚏🚌<br>Bus Stop<br>Search</span>
+            </div>
+            <div class="tab-item tab-pink">
+                <span class="tab-text">🔎🚏🚌<br>Bus Route<br>Search</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- [화면 2] iPhone 16 - 2 -->
+    <div class="app-container screen-2">
+        <!-- BUS 타이틀 (화면 2는 타이틀 아래 바로 색상 영역) -->
+        <div class="app-title-container">
+            <h1 class="app-title">🚍🚌🚏</h1>
+        </div>
+
+        <!-- 색상 영역 (Flex column, 비율 2:1) -->
+        <div class="color-areas-container">
+            <div class="area-blue">
+                <p class="color-text">Go to home 🔥🏃💨🏠🏠🏠</p>
+            </div>
+            <div class="area-pink">
+                <p class="color-text">Go to home 🏢🏢🏢</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- [화면 3] iPhone 16 - 3 -->
+    <div class="app-container screen-3">
+        <!-- BUS 타이틀 -->
+        <div class="app-title-container">
+            <h1 class="app-title">🚍🚌🚏</h1>
+        </div>
+
+        <!-- 초록색 상단 바 -->
+        <div class="top-divider-green"></div>
+
+        <!-- 상세 내용 영역 -->
+        <div class="detail-content-area">
+            <p class="detail-text">🚏🚌Add Bus Stop</p>
+        </div>
+    </div>
+
+</body>
+</html>

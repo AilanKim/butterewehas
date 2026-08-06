@@ -1,0 +1,77 @@
+<!DOCTYPE html><!--선언 시작-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bus Stop</title> <!--제목 타이틀 부분 지정-->
+
+<style>
+
+    body{
+        background-color: rgb(223,255,244);
+        font-family: Arial, sans-serif;}
+
+    /* 글자 색 부분 지정*/
+    .color-navy{color:navy;}
+    .color-aqua{color:aqua;}
+
+    /* 글자 크기 */
+    .font-size-100px{font-size:100px;}
+    .font-size-50px{font-size:50px;}
+    .font-size-20px{font-size:20px;}
+    .font-size-10px{font-size:10px;}
+
+    /* 굵게 (볼드적용) */
+    .font-weight-bold{font-weight:900;}
+
+    /* 글자 가운데 정렬 */
+    .text-center{text-align:center;}
+
+</style>
+
+</head>
+
+<body>
+
+<h1 class="font-size-100px color-navy font-weight-bold">
+BUS
+</h1>
+
+<div style="border:10px solid rgb(135,255,155); 
+border-radius:15px; width:140px; padding:20px;">
+    <p class="font-size-20px text-center">
+        Add Bus Stop
+    </p>
+</div>
+
+<br>
+
+<div style="border:10px solid rgb(118,193,255); 
+border-radius:15px; width:140px; padding:20px;">
+    <p class="font-size-20px text-center">
+        Go to home
+    </p>
+</div>
+
+<br>
+
+<div style="border:10px solid rgb(255,181,181); 
+border-radius:15px; width:140px; padding:20px;">
+    <p class="font-size-20px text-center">
+        Go to work
+    </p>
+</div>
+
+<br>
+
+<!-- 실선부분-->
+<div style="border: 5px solid rgb(155, 213, 255);"></div>
+    <!-- 배경색 을 채운 둥근 상자 -->
+<div style="
+background: linear-gradient(to right, rgb(255, 181, 181) 50%,
+rgb(155, 213, 255) 50%); 
+padding: 150px; width: 100px;">
+</div>
+
+</body>
+</html>

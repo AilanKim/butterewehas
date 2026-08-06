@@ -1,0 +1,28 @@
+/* 버스스탑 부문 지정 */
+.busstop {
+    color: navy;
+    font-size: 50px;
+    font-weight: bolder;
+    text-align: center;
+}
+
+/* 배경지정 */
+.backrgroundcolor {background-color: rgb(226, 255, 255);}
+
+/* 버스추가 부분 버튼 */
+.addbus_button {
+    background-color: rgb(172, 255, 172);
+    color: black;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 10px;
+    font-size: 30px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+}
+
+/* 정류장 추가 버튼 박스 중앙으로 하는 것 */
+.button_box {
+    text-align: center;
+}
