@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍜🍜🍜</title>
+    <style>
+        /* 기본 초기화 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* 아이폰 16 프로 프레임 */
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            background-color: #fff;
+            border-radius: 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* 뒤로가기 버튼 스타일 */
+        .back-btn {
+            position: absolute;
+            top: 18px;
+            left: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffffff; /* 주황색 배경 위에서 잘 보이도록 하얀색으로 지정 */
+            text-decoration: none;
+            z-index: 30;
+            line-height: 1;
+        }
+
+        /* 상단 헤더 텍스트 (뒤로가기 버튼과 안 겹치도록 left 지정) */
+        .header-text {
+            color: #ffffff; /* 하얀색 텍스트 */
+            font-size: 14px;
+            position: absolute;
+            top: 20px;
+            left: 55px; /* 🔥 겹치지 않게 왼쪽 여백을 55px로 이동 */
+            z-index: 10;
+        }
+
+        /* 상단 주황색 블록 */
+        .content-top {
+            height: 150px;
+            background-color: #12582c; /* 진한 주황색 */
+            display: flex;
+            justify-content: flex-end; /* 오른쪽 정렬 */
+            align-items: center;      /* 세로 중앙 정렬 */
+            padding-right: 35px;      /* 오른쪽 여백 */
+            position: relative;
+        }
+
+        /* 라면 이모지 (텍스트) */
+        .ramen-emoji {
+            font-size: 100px;
+            margin-top: 20px;
+            line-height: 1;
+            user-select: none;
+        }
+
+        /* 하단 연한 살구색 블록 */
+        .content-bottom {
+            flex: 1; /* 남은 높이 전체 차지 */
+            background-color: #d77474; /* 부드러운 살구색/연주황 */
+            position: relative;
+            padding: 30px;
+        }
+
+        /* NEXT 버튼 스타일 */
+        .menu-btn {
+            position: absolute;
+            right: 25px;
+            bottom: 30px;
+            padding: 10px 20px;
+            background-color: #12582c;
+            border: 0px solid #ff3b00;
+            border-radius: 20px;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-btn:active {
+            transform: scale(0.95);
+        }
+
+        .custom-underline {
+        text-decoration: underline;
+        text-decoration-color: rgb(8, 68, 0); /* 밑줄 색상 */
+        text-decoration-thickness: 5px;  /* 밑줄 두께 */
+        }
+
+        h1 {
+        font-size: 30px;
+        font-style: italic;
+        color : rgb(130, 11, 11)
+        }
+
+        .p-name {
+        font-size: 15px;
+        color : rgb(200, 0, 0);
+        text-align: left;
+        margin: 5px;
+        }
+
+        .p-name1 {
+        font-size: 15px;
+        color : rgb(84, 84, 84);
+        text-align: left;
+        font-weight: bold;
+        margin: 5px;
+        }
+
+        .p-name2 {
+        font-size: 15px;
+        color : rgb(70, 0, 0);
+        text-align: left;
+        margin: 5px;
+        }
+
+        .cook-underline {
+        text-decoration: underline;
+        text-decoration-color: rgb(0, 0, 0); /* 밑줄 색상 */
+        text-decoration-thickness: 2px; /* 밑줄 두께 */
+        }
+
+        .add-underline {
+        text-decoration: underline;
+        text-decoration-color: rgb(70, 0, 0); /* 밑줄 색상 */
+        text-decoration-thickness: 2px; /* 밑줄 두께 */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. 전체를 감싸는 아이폰 프레임 시작 -->
+    <div class="phone-container">
+        
+        <!-- 뒤로가기 버튼 및 상단 텍스트 -->
+        <a href="../paga_spaghetti.html" class="back-btn">←</a>
+        <p class="header-text">Noodles and Ramen</p>
+
+        <!-- 상단 주황색 영역 (라면 이모지 텍스트) -->
+        <div class="content-top">
+            <span class="ramen-emoji">🍜</span>
+        </div>
+
+        <!-- 하단 살구색 영역 (내용 및 버튼) -->
+        <div class="content-bottom">
+            <!-- 내용이 들어가는 자리 -->
+        <h1 class="custom-underline">스파게티🍝</h1>
+        <br>
+
+        <p class="p-name">
+        1990년대 초반에 출시된 오뚜기 스파게티 제품을 뜻합니다.
+        <br><br>
+        이름 그대로 이탈리아 요리인 스파게티를 간편하게 끓여 먹을 수 있도록 만든 국물 없는 비빔 타입의 인스턴트 라면입니다.
+        <br><br>
+        </p>
+
+        <p class="cook-underline p-name1">조리법<br>
+        <p class="p-name1">1. 물 350ml (1컵과 3/4컵)에
+        <br>
+        건더기 스프를 넣고 물을 끓인 후
+        <br><br>
+        2. 면을 넣은 후 5분간 더 끓입니다.
+        <br>
+        면이 냄비에 붙지 않도록 저어주세요.
+        <br><br>
+        3. 면이 알맞게 익으면 불을 끄고 액체스프와 분말스프를 넣어 잘 비벼 드시면 됩니다.
+        <br><br>
+        면 2개 조리시 물은 550ml~600ml를 넣어주세요.
+        <br><br>
+
+        <p class="p-name2 add-underline">스파게티 관련 라면 조리<br></p>
+        <p class="p-name2">
+        1. 치즈스파게티<br>
+        </p>
+            <!-- NEXT 버튼 (살구색 영역 오른쪽 하단에 배치) -->
+            <a href="pak.html" class="menu-btn">NEXT</a>
+        </div>
+
+    </div> <!-- 아이폰 프레임 끝 -->
+
+</body>
+</html>
