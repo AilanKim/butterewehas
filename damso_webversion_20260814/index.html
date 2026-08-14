@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>담소 (談笑) | 도서 소개</title>
+
+<style>
+    /* 
+==================================================
+1. CSS 전역 변수 선언 (:root)
+==================================================
+    */
+    :root {
+    --bg-white: #ffffff;
+    --bg-light-gray: #f8f8f9;
+    --bg-card: #ffffff;
+
+    --text-main: #222222;
+    --text-sub: #666666;
+    --text-muted: #999999;
+
+    --point-red: #d9381e;
+    --point-orange: #e85d04;
+    --border-color: #e8e8ec;
+    }
+
+    /* 
+==================================================
+2. 기본 초기화 & 스무스 스크롤
+==================================================
+    */
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    html {
+    scroll-behavior: smooth; /* 클릭 시 스무스한 페이지 이동 */
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-white);
+    overflow-x: hidden; /* 가로 스크롤바 생김 방지 */
+    }
+
+    a {
+text-decoration: none;
+color: inherit;
+    }
+
+    ul, li {
+list-style: none;
+    }
+
+    img {
+max-width: 100%;
+display: block;
+    }
+
+/* 
+==================================================
+3. 상단 좌측 미니 로고
+==================================================
+    */
+    .top-left-header {
+    position: fixed;
+    top: 25px;
+    left: 35px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    }
+
+    .top-left-logo {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-main);
+    }
+
+    .top-left-tag {
+    font-size: 0.75rem;
+    color: var(--point-red);
+    font-weight: 500;
+    letter-spacing: 1px;
+    }
+
+    /* 
+==================================================
+4. [핵심] 마우스 호버 시에만 슬라이드되는 사이드바 + 완전 숨김 2단계 추가
+==================================================
+    */
+    /* 마우스 접근 감지용 숨김 투명 바 (화면 우측 끝 20px 영역) */
+    .sidebar-trigger-zone {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 100vh;
+    z-index: 199;
+    }
+    .right-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 260px;
+    height: 100vh;
+    z-index: 200;
+
+    /* [평소 상태] 탭 스티커(44px)까지 완전히 화면 우측 바깥으로 밀어 숨김 */
+    transform: translateX(calc(100% + 50px));
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* 1단계: 화면 오른쪽에 마우스를 대면 스티커 탭만 살짝 튀어나옴! */
+    .sidebar-trigger-zone:hover + .right-sidebar {
+    transform: translateX(100%);
+    }
+
+    /* 2단계: 튀어나온 스티커 탭이나 패널 위에 마우스를 대면 전체 오픈! */
+    .right-sidebar:hover {
+    transform: translateX(0);
+    }
+
+
+    /* 화면 오른쪽에 항시 고정되어 튀어나와 있는 다이어리 인덱스 탭 */
+    .index-tabs {
+    position: absolute;
+    left: -44px; /* 본체 왼쪽 바깥으로 스티커 탭 44px 돌출 */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 201;
+    }
+
+    /* 개별 스티커 탭 디자인 */
+    .tab-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    padding: 14px 4px;
+    background-color: #ffffff;
+    border: 1px solid var(--border-color);
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    box-shadow: -4px 2px 8px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    }
+
+    .tab-text {
+    writing-mode: vertical-rl;
+    font-size: 0.75rem;
+    font-family: serif;
+    font-weight: 600;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    }
+
+    .tab-item.tab-red {
+    border-left: 4px solid var(--point-red);
+    }
+    .tab-item.tab-red .tab-text {
+    color: var(--point-red);
+    }
+
+    .tab-item.tab-orange {
+    border-left: 4px solid var(--point-orange);
+    }
+    .tab-item.tab-orange .tab-text {
+    color: var(--point-orange);
+    }
+
+    /* 탭에 마우스 대면 스티커가 좌측으로 살짝 반응하는 디테일 */
+    .tab-item:hover {
+    transform: translateX(-6px);
+    background-color: #fafafa;
+    }
+
+    /* 오른쪽 슬라이드 본체 패널 */
+    .sidebar-panel {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-left: 1px solid var(--border-color);
+    padding: 4rem 2rem;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .index-title {
+    font-size: 0.75rem;
+    font-family: serif;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--point-red);
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.8rem;
+    }
+
+    .index-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    }
+
+    .index-item a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    font-family: serif;
+    color: var(--text-sub);
+    transition: color 0.3s ease;
+    }
+
+    .index-item a:hover {
+    color: var(--point-red);
+    }
+
+    .index-num {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: serif;
+    }
+
+    /* 
+==================================================
+5. 각 페이지(섹션) 공통 레이아웃
+=================================================
+    */
+    section {
+    min-height: 100vh;
+    padding: 6rem 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    }
+
+    section:nth-child(even) {
+    background-color: var(--bg-light-gray);
+    }
+
+    .section-header {
+    margin-bottom: 2.5rem;
+    }
+
+    .section-num {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--point-orange);
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+    font-size: 2.2rem;
+    font-family: serif;
+    font-weight: 300;
+    }
+
+    .section-title strong {
+    font-weight: 700;
+    font-family: serif;
+    color: var(--point-red);
+    }
+
+/* 
+==================================================
+6. PAGE 01: 메인 화면 (물결 및 파문)
+==================================================
+    */
+    #main {
+    padding: 0;
+    align-items: center;
+    text-align: center;
+    background-color: transparent;
+    }
+
+    .main-hero-container {
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    }
+
+    .main-bg-image { /* 수정 후 (깔끔함 유지) */
+    max-width: 620px;
+    width: 85%;
+    height: auto;
+    object-fit: contain;
+    z-index: 2;
+    filter: drop-shadow(0 15px 30px rgba(0,0,0,0.15)); /* 물속 느낌에 맞게 그림자만 살짝 짙게 유지 */
+    animation: float 6s ease-in-out infinite;
+    }   
+
+
+    @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+    }
+
+/* ==================================================
+맑은 물속 유영(Underwater Floating) 효과
+================================================== */
+
+/* 1. 메인 구역 배경: 맑은 연못 빛깔 잔물결 그라데이션 */
+.underwater-hero {
+position: relative;
+background: radial-gradient(circle at 50% 30%, #ffffff 0%, #f9fdff 70%, #ffffff 100%) !important;
+width: 100%;
+min-height: 100vh;
+overflow: hidden;
+}
+
+/* 이미지 및 파문 감싸는 컨테이너 */
+.image-water-wrapper {
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+/* 2. [핵심] 물고기 이미지가 물속에서 헤엄치듯 둥둥 뜨는 애니메이션 */
+.main-bg-image {
+max-width: 620px;
+width: 85%;
+height: auto;
+object-fit: contain;
+z-index: 2;
+filter: drop-shadow(0 20px 30px rgba(221, 230, 233, 0.28));
+
+/* 둥둥 떠다니는 유영 애니메이션 적용 */
+animation: swimInWater 8s ease-in-out infinite alternate;
+}
+
+/* 물속 유영(헤엄치기) 프레임 */
+@keyframes swimInWater {
+0% {
+transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
+}
+33% {
+transform: translateY(-12px) translateX(8px) rotate(1.5deg) scale(1.02);
+}
+66% {
+transform: translateY(-6px) translateX(-10px) rotate(-1deg) scale(0.99);
+}
+100% {
+transform: translateY(-18px) translateX(5px) rotate(1deg) scale(1.01);
+}
+}
+
+/* 2. 잔잔하게 퍼져나가는 물결 파문 (Water Ripple) */
+    .ripple-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 2px solid rgba(245, 245, 246, 0.142);
+    box-shadow: 0 0 20px rgba(220, 223, 225, 0.5);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    animation: waterRipple 6s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+    }
+
+/* 각 물결 ring의 시차 주기 */
+    .ripple-ring.r1 { animation-delay: 0s; }
+    .ripple-ring.r2 { animation-delay: 2s; }
+    .ripple-ring.r3 { animation-delay: 4s; }
+
+/* 물결이 커지면서 투명해지는 키프레임 */
+    @keyframes waterRipple {
+    0% {
+    width: 200px;
+    height: 200px;
+    opacity: 0.8;
+    border-width: 3px;
+    }
+    50% {
+    opacity: 0.4;
+    }
+    100% {
+    width: 750px;
+    height: 750px;
+    opacity: 0;
+    border-width: 1px;
+    }
+    }
+
+    @keyframes ripple-out {
+    0% {
+        width: 180px;
+        height: 180px;
+        opacity: 0.5;
+    }
+    100% {
+        width: 750px;
+        height: 750px;
+        opacity: 0;
+    }
+    }
+
+    .main-text-box {
+    margin-top: 2rem;
+    z-index: 2;
+    }
+
+    .main-title {
+    font-size: 1.8rem;
+    font-family: serif; /* 글씨체 추가 */
+    font-weight: 300;
+    letter-spacing: 8px;
+    margin-bottom: 0.5rem;
+    }
+
+    .main-sub {
+    font-size: 0.9rem;
+    font-family: serif;
+    color: var(--text-sub);
+    letter-spacing: 2px;
+    }
+
+/* 
+==================================================
+7. PAGE 02 ~ 06 상세 내용
+==================================================
+    */
+    /* PAGE 02: BOOK */
+    .book-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4rem;
+    align-items: center;
+    }
+
+    .book-cover-img {
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    background-color: var(--bg-white);
+    padding: 1rem;
+    }
+
+    .book-quote {
+    font-size: 1.1rem;
+    color: var(--point-red);
+    border-left: 2px solid var(--point-red);
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    }
+
+    .book-desc-text {
+    line-height: 1.5;
+    color: var(--text-sub);
+    font-size: 1rem;
+    font-family: serif;
+    }
+
+    .book-desc-text2 {
+    font-size: 15px;
+    font-family: serif;
+    color: rgb(151, 151, 151);
+    }
+
+    /* PAGE 03: AUTHOR */
+    .author-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    }
+
+    .author-profile-img {
+    width: 250px;          /* 1. 가로 너비 (원하는 크기로 px 조절) */
+    height: 310px;         /* 2. 세로 높이 */
+    object-fit: cover;     /* 3. [핵심] 정해진 크기 안에서 이미지 비율이 찌그러지지 않고 자연스럽게 채워짐 */
+    border-radius: 10px;   /* 4. (선택) 은은하고 부드러운 둥근 모서리 연출 */
+    box-shadow: 0 10px 20px rgba(5, 5, 5, 0.364); /* 5. (선택) 미세한 그림자로 고급스러움 추가 */
+    }
+
+    #author-signature-icon {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    }
+
+    .author-info h3 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    }
+
+    .author-tag {
+    color: var(--point-orange);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    display: block;
+    }
+
+/* PAGE 04: PUBLISHER */
+.publisher-card {
+background-color: var(--bg-card);
+border: 1px solid var(--border-color);
+padding: 1rem;
+border-radius: 10px;
+max-width: 900px;
+box-shadow: 0 5px 10px rgba(5, 5, 5, 0.381);
+margin: 0 auto;
+}
+
+.publisher-card2{
+background-color: var(--bg-card);
+line-height: 1.5;
+padding: 1rem;
+max-width: 900px;
+border-left: 2px solid var(--point-red);
+color: var(--point-red);
+line-height: 0.5;
+font-size: 1rem;
+box-shadow: 0 2px 5px rgba(5, 5, 5, 0.3);
+margin: 0 auto;
+}
+
+.publisher-card h3 {
+font-size: 1.1rem;
+margin-bottom: 1rem;
+font-family: serif;
+color: var(--point-orange);
+font-style: italic;
+}
+
+.publisher-profile-img {
+width: 100%;     /* 부모 컨테이너 너비에 유연하게 맞춤 */
+max-width: 900px; 
+left: 10px;     /* 아무리 화면이 커져도 최대 900px까지만 늘어남 */
+height: 500px;         /* 원하시는 세로 높이 지정 (또는 auto) */
+object-fit: cover;     /* 비율 유지하며 고정 높이에 맞게 자르기 */
+border-radius: 15px;
+box-shadow: 0 5px 10px rgba(5, 5, 5, 0.3);
+display: block;
+margin-bottom: 2rem;
+}
+
+/* 여기에 인터뷰 내용 넣을 곳. 접고 펼치기 */
+/* 인터뷰 전체 영역 간격 */
+.interview-container {
+max-width: 900px; /* 기존 카드/이미지 너비에 맞춰 조정 */
+margin: 30px auto 0;
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+
+/* 인터뷰 카드 기본 디자인 (기존 화이트 카드와 통일) */
+.interview-card {
+background: #ffffff;
+border-radius: 12px;
+border: 1px solid #f0f0f0;
+box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+overflow: hidden;
+transition: all 0.3s ease;
+}
+
+/* 마우스 올렸을 때 살짝 뜨는 효과 */
+.interview-card:hover {
+box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* 1줄 미리보기 타이틀 (summary) */
+.interview-summary {
+padding: 20px 24px;
+font-size: 0.98rem;
+font-weight: 600;
+color: #333333;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 12px;
+list-style: none; /* 기본 삼각형 화살표 제거 */
+user-select: none;
+}
+
+/* 브라우저 기본 화살표 숨기기 */
+.interview-summary::-webkit-details-marker {
+display: none;
+}
+
+/* Q1, Q2 배지 (포인트 오렌지 색상) */
+.q-badge {
+color: #d9532f; /* 담소 포인트 색상 */
+font-weight: 700;
+font-size: 1.05rem;
+flex-shrink: 0;
+}
+
+/* 한 줄 텍스트가 넘치면 줄바꿈 안 되게 처리 */
+.summary-text {
+flex-grow: 1;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis; /* 글자가 길면 ... 으로 표시 */
+}
+
+/* 오른쪽 화살표 아이콘 */
+.arrow-icon {
+font-size: 0.75rem;
+color: #aaa;
+transition: transform 0.3s ease;
+flex-shrink: 0;
+}
+
+/* 카드 펼쳐졌을 때 화살표 회전 */
+.interview-card[open] .arrow-icon {
+transform: rotate(180deg);
+color: #d9532f;
+}
+
+/* 펼쳐지는 인터뷰 본문 내용 */
+.interview-content {
+padding: 0 24px 22px 52px; /* Q 배지 위치 고려한 여백 */
+color: #666666;
+font-size: 0.93rem;
+line-height: 1.8;
+border-top: 1px solid #f8f8f8;
+padding-top: 16px;
+animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(-5px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+    /* 구분선 ---------------------------------- */
+    /* PAGE 05: STORE */
+    .store-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    }
+
+    .store-item {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 2rem;
+    border-radius: 6px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 5px rgba(5, 5, 5, 0.3);
+    }
+
+    .store-item:hover {
+    border-color: var(--point-orange);
+    transform: translateY(-5px);
+    }
+
+    .store-name {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    }
+
+    .store-link {
+    font-size: 0.8rem;
+    color: var(--point-red);
+    font-weight: 600;
+    }
+
+    /* PAGE 06: CONTACT */
+/* 기본 섹션 배경 및 여백 설정 */
+    .contact-section {
+        background-color: #f8f9fa;
+        padding: 60px 40px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: #333333;
+    }
+
+/* 상단 타이틀 스타일 */
+    .section-title {
+        margin-bottom: 40px;
+    }
+
+    .sub-logo {
+        display: block;
+        color: #e34320;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+    }
+
+    .section-title h2 {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .section-title .highlight {
+        color: #e34320;
+    }
+
+    /* 메인 2열 그리드 레이아웃 */
+    .content-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 30px;
+        max-width: 1000px;
+    }
+
+    /* [왼쪽] 출판사 정보 스타일 */
+    .info-left {
+        flex: 1;
+        padding-left: 100px;
+    }
+
+    .company-name {
+        font-size: 18px;
+        color: #495057;
+        margin-top: 0;
+        margin-bottom: 30px;
+    }
+
+    .contact-list p {
+        font-size: 15px;
+        color: #495057;
+        margin: 10px 0;
+    }
+
+    .contact-list span {
+        color: #6c757d;
+    }
+
+    .business-info {
+        margin-top: 36px;
+        padding-top: 20px;
+        font-size: 14px;
+        color: #6c757d;
+        line-height: 1.6;
+    }
+
+    .business-info p {
+        margin: 6px 0;
+    }
+
+    /* [오른쪽] SNS 바로가기 영역 스타일 */
+    .sns-right {
+        flex: 1;
+        width: 100%;
+    }
+
+    .sns-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #495057;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    /* SNS 2x2 배치 */
+    .sns-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    /* SNS 카드 기본 스타일 */
+    .sns-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        padding: 24px 16px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: #333333;
+        border: 1px solid #e9ecef;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        transition: all 0.2s ease;
+    }
+
+    .sns-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .icon-box {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+    }
+
+    .icon-box svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .sns-card span {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+/* 브랜드별 포인트 색상 커스텀 */
+.sns-card.instagram .icon-box { color: #e1306c; }
+.sns-card.kakao .icon-box { color: #3c1e1e; }
+.sns-card.naver .icon-box { color: #03cf5d; }
+.sns-card.youtube .icon-box { color: #ff0000; }
+
+.naver-text {
+    font-weight: 900;
+    font-size: 13px;
+    background-color: #03cf5d;
+    color: white;
+    padding: 4px 6px;
+    border-radius: 4px;
+    }
+
+/* 반응형 (화면 폭이 좁을 때 세로 정렬) */
+@media (max-width: 768px) {
+    .content-container {
+            flex-direction: column;
+            gap: 40px;
+    }
+}
+
+    .sns-right {
+        width: 100%;
+    }
+
+    /* 푸터 영역 전체 스타일 */
+.footer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 0;        /* 글자와 링크를 가운데 정렬 */
+    align-items: center;    /* 가로 기준 중앙 정렬 */
+    justify-content: center;/* 세로 기준 중앙 정렬 */
+    width: 100%;            /* 전체 너비 차지 */
+    padding: 10px 0px;        /* 위아래/좌우 여백 */
+    background-color: #f8f9fa;  /* 은은하고 깔끔한 연회색 배경 */
+    border-top: 1px solid #e9ecef; /* 상단 구분선 */
+    box-sizing: border-box; /* 화면 가로 스크롤 방지 */
+}
+
+/* 저작권 글자 스타일 */
+.copyright {
+    font-size: 14px;
+    color: #6c757d;             /* 너무 진하지 않은 세련된 회색 */
+    margin-bottom: 10px;        /* 링크와의 간격 */
+    font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- 미니 로고 -->
+<header class="top-left-header">
+    <a href ="index.html" class= "top-left-logo">ㄷㅏㅁㅅㅗ</a>
+    <a href ="index.html" class="top-left-tag">| DAMSO</a>
+</header>
+
+<!-- 마우스 감지 영역 (화면 오른쪽 끝) -->
+<div class="sidebar-trigger-zone"></div>
+
+<aside class="right-sidebar">
+
+    <!-- 1. 화면 오른쪽에 마우스를 올리면 감성적으로 튀어나오는 다이어리 스티커 탭 -->
+    <div class="index-tabs">
+    <a href="#main" class="tab-item tab-red">
+        <span class="tab-text">메 인</span>
+    </a>
+    <a href="#book" class="tab-item tab-orange">
+        <span class="tab-text">책 소 개</span>
+    </a>
+    <a href="#author" class="tab-item tab-red">
+        <span class="tab-text">작 가</span>
+    </a>
+    <a href="#publisher" class="tab-item tab-orange">
+        <span class="tab-text">출 판 사</span>
+    </a>
+    <a href="#store" class="tab-item tab-red">
+        <span class="tab-text">구 매 처</span>
+    </a>
+    <a href="#contact" class="tab-item tab-orange">
+        <span class="tab-text">문의및정보</span>
+    </a>
+    </div>
+
+    <!-- 2. 스티커 탭 위로 마우스를 옮기면 슬라이드로 펼쳐지는 인덱스 상세 메뉴 -->
+    <div class="sidebar-panel">
+    <div class="index-title">INDEX MENU</div>
+    <ul class="index-menu">
+        <li class="index-item"><a href="#main"><span>01. 메인 화면</span><span class="index-num">MAIN</span></a></li>
+        <li class="index-item"><a href="#book"><span>02. 담소 도서 소개</span><span class="index-num">BOOK</span></a></li>
+        <li class="index-item"><a href="#author"><span>03. 담소의 작가</span><span class="index-num">AUTHOR</span></a></li>
+        <li class="index-item"><a href="#publisher"><span>04. 출판사 소개</span><span class="index-num">ABOUT</span></a></li>
+        <li class="index-item"><a href="#store"><span>05. 도서 구매처</span><span class="index-num">STORE</span></a></li>
+        <li class="index-item"><a href="#contact"><span>06. 문의및정보</span><span class="index-num">CONTACT</span></a></li>
+    </ul>
+    </div>
+
+</aside>
+
+<!-- ==================================================
+메인 콘텐츠 (6개 섹션 상세 내용)
+================================================== -->
+<main>
+<section id="main" class="underwater-hero">
+<!-- 1. 수면 잔물결 / 광선 효과 -->
+<div class="sun-rays"></div>
+
+<!-- 3. 메인 콘텐츠 및 물결 파문(Ripple) -->
+<div class="main-hero-container">
+    <div class="image-water-wrapper">
+    <!-- 🌊 퍼져나가는 물결 파문 ring들 -->
+    <div class="ripple-ring r1"></div>
+    <div class="ripple-ring r2"></div>
+    <div class="ripple-ring r3"></div>
+
+<!-- 3. 메인 콘텐츠 -->
+<div class="main-hero-container">
+    <img src="투명배경_GPT_20260810.png" alt="담소 메인 일러스트" class="main-bg-image">
+    <div class="main-text-box">
+        <h1 class="main-title">담소 (damso)</h1>
+        <p class="main-sub">너를 담는다, 나를 담는다, 우리를 담는다.</p>
+    </div>
+</div>
+</section>
+
+    <!-- PAGE 02: 책 소개 -->
+    <section id="book">
+    <div class="section-header">
+        <span class="section-num">damso</span>
+        <h2 class="section-title">책 <strong>소개</strong></h2>
+    </div>
+    <div class="book-grid">
+        <img src="담소_도서북.png" alt="담소 책 표지" class="book-cover-img">
+        <div>
+        <div class="book-quote">"마음의 담을 허물고, 서로의 진심이 맞닿는 자리"</div>
+        <br>
+        <p class="book-desc-text">
+            도서 《담소》는 바쁜 현대 사회 속에서 우리가 잊고 지냈던 '대화'와 '교감'의 가치를 담아낸 감성 에세이 소설입니다. 
+            <br><br>
+            붉은색과 주황색 두 물고기가 원을 그리며 유영하듯, 사람과 사람 사이의 진심이 오가는 순간을 잔잔하고 매혹적인 문장으로 풀어나갑니다.
+            <br><br>
+            <i>너를 나눈다, 나를 나눈다, 우리를 나눈다.</i>
+            </p>
+            <br><br>
+
+            <p class="book-desc-text2">
+            글로 전하는 정성인 ‘필담’과 마주 앉아 나누는 온기인 ‘담소’.
+            <br><br>
+            그 경계 어딘가에서 우리는 서로의 조각들을 정성껏 나누어 담습니다.
+            너무 가볍지도, 그렇다고 너무 무겁지도 않은 딱 기분 좋은 거리에서, 우리가 나눌 수 있는 가장 다정한 이야기들을 꺼내어 놓습니다.
+            누군가에겐 포근한 공감으로, 누군가에겐 깊은 위로로, 
+            또 누군가에게는 새로운 생각의 씨앗으로 다가갈 이 에세이 같은 소설은 우리 삶의 다양한 풍경을 비춥니다.
+            소소한 일상 속에서 자신도 모르게 높게 쌓아 올린 마음의 담장들.
+            <br><br>
+            작가 김희는 이 책을 통해 그 담을 아주 조금만 낮추고, 가만히 서로의 목소리에 귀를 기울여 보길 제안합니다.
+            '너를 나누고, 나를 나누며, 마침내 우리가 되는 시간.' 
+            도서 ‘담소’가 당신의 마음에 따스한 볕을 드리웁니다.
+            </p><br>
+        </div>
+    </div>
+    </section>
+
+    <!-- PAGE 03: 작가 소개 -->
+    <section id="author">
+    <div class="section-header">
+        <span class="section-num">damso</span>
+        <h2 class="section-title">작가 <strong>소개✍🏻</strong></h2>
+    </div>
+    <div class="author-wrapper">
+        <img src="담소_작가_김희2.png" alt="담소 작가소개" class="author-profile-img">
+        <div class="author-info">
+        <h3>김  희</h3>
+        <span class="author-tag">#에세이스트 #감성문장의 작가</span>
+        <p><i>당신의 하루는 어떤 색인가요?</i></p>
+        <br>
+        <p class="book-desc-text">
+            글로 사람들의 마음의 경계를 허물며 마음의 여백을 그리는 작가입니다. <br>
+            일상의 작은 유영을 관찰하고, 이를 통해 얻은 위로와 평온을 글이라는 미학으로 기록하고 있습니다.
+            </p>
+            <br><br>
+        
+        <p class="book-desc-text2">그녀의 문장들은 화려하지 않지만, 소소한 일상 속에서 우리가 놓치고 지나쳤던 마음의 조각들을 소중히 길어 올립니다.
+            "내가 먼저 나를 나눌 때, 비로소 너의 이야기가 들리기 시작한다"는 믿음으로, 그녀는 오늘도 종이 위에 따스한 대화의 자리를 마련합니다.
+            <br>
+            작가 김희가 건네는 이 다정한 담소에 여러분을 초대합니다.
+            <br>
+            이곳에서 당신은 혼자가 아닌, 우리로서의 온기를 발견하게 될 것입니다.   
+        </p>
+        </div>
+    </div>
+    </section>
+
+    <!-- PAGE 04: 출판사 소개 -->
+    <section id="publisher">
+    <div class="section-header">
+        <span class="section-num">damso</span>
+        <h2 class="section-title">출판사 <strong>소개</strong></h2></div>
+        <img src="담소_출판사내부2.png" alt="담소 작가소개" class="publisher-profile-img">
+        <div class="author-info">
+        <div class="publisher-card">
+        <br>
+        <h3>담소 출판사(damso Publishing Company)</h3>
+        <div class="publisher-card2">
+        <i>"세상의 온기를 발굴하여 국경 너머로 전하는, 담소출판사"</i>
+        </div><br>
+
+        <div class="book-desc-text">
+        담소 출판사는 미니멀한 디자인과 진정성 있는 문장을 지향하는 독립 출판 브랜드입니다.<br>
+        종이가 주는 감촉과 여백이 주는 아늑함을 바탕으로, 소장 가치가 높은 도서들을 만들어 나가고 있습니다.
+        <br><br></div>
+        
+        <div class="book-desc-text2">담소출판사는 이름처럼 작고 소박한 공간이지만, 그 안에서 발굴해내는 글의 온기만큼은 누구보다 뜨겁습니다.
+        <br><br>
+        우리는 
+        <br>
+        화려한 수식어보다 마음을 울리는 다정한 문장의 힘을 믿으며, 에세이와 수필을 통해 독자들과 깊은 유대를 쌓아왔습니다. 
+        감사하게도 우리의 진심을 알아봐 주시는 단단한 마니아층 덕분에 담소출판사는 늘 외롭지 않은 길을 걷고 있습니다.
+        <br>
+        최근 우리는 에세이의 진솔함과 소설의 상상력을 결합한 ‘에세이 소설’이라는 새로운 장르를 개척했습니다.
+        <br>
+        이 낯설지만 다정한 시도는 국내를 넘어 해외에서도 뜨거운 러브콜을 받으며 전 세계 독자들과 만나고 있습니다.
+        <br><br>
+        <i>‘너를 나눈다, 나를 나눈다, 우리를 나눈다’</i>
+        <br><br>
+        우리의 약속은 이제 더 넓은 세상을 향합니다. 
+        <br>
+        담소출판사는 앞으로도 정형화된 틀에 갇히지 않고, 당신의 삶에 새로운 경험과 깊은 여운을 남길 따뜻한 책들을 꾸준히 선보이겠습니다.
+        </p>
+        <br>
+        </div>
+    </div>
+
+<!----------- 인터뷰 섹션 전체 컨테이너 ------------->
+<div class="interview-container">
+
+<!-- 인터뷰 01 -->
+<details class="interview-card">
+    <summary class="interview-summary">
+        <span class="q-badge">Interview 1</span>
+        <span class="summary-text">[담소 3년차 독자] "나만 알고 싶은, 하지만 모두가 알았으면 하는 온기"</span>
+        <span class="arrow-icon">▼</span>
+    </summary>
+    <div class="interview-content">
+    <p>
+        <b>인터뷰어: 김지우 님 (3년 차 담소 마니아)</b>
+        <br><br>
+        "처음 담소출판사의 책을 접했을 때, 마치 누군가 제 손을 가만히 잡아주는 느낌을 받았어요.
+        <br>
+        요즘처럼 자극적인 이야기가 넘쳐나는 세상에서, 담소는 늘 '낮은 담장' 너머로 다정한 안부를 건네주거든요.
+        <br>
+        특히 이번에 나온 김희 작가님의 에세이 소설 '담소'는 정말 혁신적이었어요. 
+        <br>
+        에세이의 진솔함과 소설의 몰입감이 이렇게 완벽하게 섞일 수 있다는 게 놀라웠죠.
+        <br>
+        <i>'너를 나눈다, 나를 나눈다, 우리를 나눈다'</i>는 슬로건처럼, 책을 읽는 내내 작가님과 깊은 대화를 나누는 기분이었어요.
+        <br>
+        해외에서도 러브콜을 받는 이유를 알 것 같아요.
+        <br>
+        담소의 책은 언어의 장벽을 넘어 마음으로 통하는 온기가 있거든요."
+        <br>
+    </p>
+    </div>
+</details>
+
+<!-- 인터뷰 02 -->
+<details class="interview-card">
+    <summary class="interview-summary">
+        <span class="q-badge">Interview 2</span>
+        <span class="summary-text">[담소 전권소장 독자] "삶의 틈새를 채워주는 가장 다정한 필담"</span>
+        <span class="arrow-icon">▼</span>
+    </summary>
+    <div class="interview-content">
+    <p>
+        <b>인터뷰어: 박민석 님 (담소출판사 전권 소장 독자)</b>
+        <br><br>
+        "저는 담소출판사가 아주 작은 곳이었을 때부터 팬이었어요.
+        <br>
+        규모는 작지만, 그들이 글을 대하는 태도는 누구보다 단단하죠. 
+        <br>
+        담소는 단순히 책을 파는 게 아니라 <i>'경험'</i>을 선물한다고 생각해요.
+        <br>
+        소소한 일상 속에서 우리가 스스로 쌓아 올린 마음의 벽을 발견하게 하고, 그 벽을 허물 용기를 주니까요.
+        <br>
+        에세이와 수필에 집중하던 담소가 소설이라는 새로운 영역에 도전한다는 소식을 들었을 때 처음엔 걱정도 했지만,
+        <br>
+        역시나 담소다웠습니다.
+        <br>
+        소설 속 인물들의 이야기가 마치 나의 이야기처럼 느껴지는 그 특별한 공감의 힘은 오직 담소만이 할 수 있는 일이죠.
+        <br>
+        앞으로 더 많은 에세이 소설을 통해 우리가 서로를 더 깊이 이해하고 나눌 수 있는 시간들이 많아졌으면 좋겠습니다."
+    </p>
+    </div>
+</details>
+
+</div>
+    </section>
+
+    <!-- PAGE 05: 도서 구매처 -->
+    <section id="store">
+    <div class="section-header">
+        <span class="section-num">damso</span>
+        <h2 class="section-title">도서 <strong>구매처🛒📚</strong></h2>
+    </div>
+    <div class="store-grid">
+        <div class="store-item">
+        <div class="store-name">교보문고</div>
+        <a href="https://www.kyobobook.co.kr/" class="store-link" target="_blank" rel="noopener noreferrer">
+            온라인 구매하기 &rarr;</a>
+        </div>
+
+        <div class="store-item">
+        <div class="store-name">YES24</div>
+        <a href="https://www.yes24.com/" class="store-link" target="_blank" rel="noopener noreferrer">
+            온라인 구매하기 &rarr;</a>
+        </div>
+
+        <div class="store-item">
+        <div class="store-name">알라딘</div>
+        <a href="https://www.aladin.co.kr/" class="store-link" target="_blank" rel="noopener noreferrer">
+            온라인 구매하기 &rarr;</a>
+        </div>
+
+        <div class="store-item">
+        <div class="store-name">영풍문고</div>
+        <a href="https://www.ypbooks.co.kr/" class="store-link" target="_blank" rel="noopener noreferrer">
+            온라인 구매하기 &rarr;</a>
+        </div>
+
+        <div class="store-item">
+        <div class="store-name">독립서점</div>
+        <a href="https://map.naver.com/p/search/%EB%8C%80%EC%A0%84%20%EB%8F%85%EB%A6%BD%EC%84%9C%EC%A0%90?searchType=place&c=15.00,0,0,0,dh" class="store-link" target="_blank" rel="noopener noreferrer">
+            온라인 구매하기 &rarr;</a>
+        </div>
+
+        <div class="store-item">
+        <div class="store-name">책 굽는 고양이</div>
+        <a href="https://smartstore.naver.com/bobacat" class="store-link" target="_blank" rel="noopener noreferrer">
+            온라인 구매하기 &rarr;</a>
+        </div>
+
+        <div class="store-item">
+        <div class="store-name">동방북스(해외판)</div>
+        <a href="https://www.tongbangbooks.com/" class="store-link" target="_blank" rel="noopener noreferrer">
+            온라인 구매하기 &rarr;</a>
+        </div>
+
+        <div class="store-item">
+        <div class="store-name">밀리의서재</div>
+        <a href="https://www.millie.co.kr/" class="store-link" target="_blank" rel="noopener noreferrer">
+            E-Book 구매하기 &rarr;</a>
+        </div>
+
+        <div class="store-item">
+        <div class="store-name">윌라</div>
+        <a href="https://www.welaaa.com/" class="store-link" target="_blank" rel="noopener noreferrer">
+            E-Book 구매하기 &rarr;</a>
+        </div>
+
+    </div>
+    </section>
+
+    <!-- PAGE 06: 출판사 정보 & 문의하기 -->
+    <section id="contact" class="contact-section">
+    <!-- 상단 타이틀 -->
+    <div class="section-title">
+        <span class="sub-logo">damso</span>
+        <h2>출판사 <span class="highlight">정보 & 문의</span></h2>
+    </div>
+
+    <!-- 메인 컨텐츠 영역 (좌/우 분할) -->
+    <div class="content-container">
+    
+    <!-- [왼쪽] 출판사 상세 정보 -->
+    <div class="info-left">
+        <h3 class="company-name">담소 출판사 (damso)</h3>
+
+    <div class="contact-list">
+        <p><span>문의 :</span> contact@damso.com</p>
+        <p><span>투고 :</span> togo@damso.com</p>
+        <p><span>협업제안 :</span> togo@damso.com</p>
+        <p><span>해외 :</span> abroad@damso.com</p>
+    </div>
+
+    <div class="business-info">
+        <p>주소: 서울행복시 소소구 구름동 담소길 17</p>
+        <p>사업자 등록번호: 123-45-67890</p>
+        <p>대표 : 김부자</p>
+    </div>
+    </div>
+
+    <!-- [오른쪽] SNS & 채널 바로가기 (입력창 대신 들어가는 영역) -->
+    <div class="sns-right">
+        <p class="sns-title">공식 채널 & 빠른 문의</p>
+
+    <div class="sns-grid">
+        <!-- 인스타그램 -->
+        <a href="https://instagram.com" class="sns-card instagram" target="_blank" rel="noopener noreferrer">
+            <div class="icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </div>
+        <span>인스타그램</span>
+        </a>
+
+        <!-- 카카오톡 -->
+        <a href="https://pf.kakao.com" class="sns-card kakao" target="_blank" rel="noopener noreferrer">
+            <div class="icon-box">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.707 4.8 4.27 6.09-.187.686-.68 2.482-.778 2.863-.122.474.173.468.365.341.152-.1 2.433-1.654 3.415-2.321.564.08 1.14.123 1.728.123 4.97 0 9-3.186 9-7.116S16.97 3 12 3z"/></svg>
+            </div>
+        <span>카카오톡 채널</span>
+        </a>
+
+        <!-- 네이버 톡톡 -->
+        <a href="https://talk.naver.com" class="sns-card naver" target="_blank" rel="noopener noreferrer">
+            <div class="icon-box">
+            <span class="naver-text">TALK</span>
+            </div>
+        <span>네이버 톡톡</span>
+        </a>
+
+        <!-- 유튜브 -->
+        <a href="https://youtube.com" class="sns-card youtube" target="_blank" rel="noopener noreferrer">
+            <div class="icon-box">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </div>
+        <span>유튜브</span>
+        </a>
+    </div>
+    </div>
+
+</div>
+</section>
+
+</main>
+
+<!-- jQuery & jquery.ripples 라이브러리 불러오기 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // #main 영역에 실시간 수면 파문 연출
+    $('#main').ripples({
+    resolution: 512,
+      dropRadius: 20, // 물결 크기
+      perturbance: 0.04, // 물결 왜곡 정도
+    });
+});
+</script>
+
+<footer>
+    <p class="footer copyright">&copy; 2001 (damso)담소출판사. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
